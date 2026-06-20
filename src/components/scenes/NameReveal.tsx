@@ -52,9 +52,9 @@ export default function NameTransformation({ onNext }: { onNext: () => void }) {
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
-            initial={{ opacity: 0, scale: 0.8, filter: "blur(20px)" }}
-            animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-            exit={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }}
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 1.1 }}
             transition={{ duration: 2, ease: [0.25, 0.1, 0.25, 1] }}
             className="text-7xl md:text-9xl font-serif text-white drop-shadow-[0_0_30px_rgba(255,200,200,0.6)] text-center absolute"
           >

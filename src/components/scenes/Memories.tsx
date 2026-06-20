@@ -28,25 +28,25 @@ export default function Memories({ onNext }: { onNext: () => void }) {
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, scale: 0.8, filter: "blur(10px)" },
+    hidden: { opacity: 0, scale: 0.8 },
     show: {
       opacity: 1,
       scale: 1,
-      filter: "blur(0px)",
       transition: { duration: 2, ease: [0.25, 0.1, 0.25, 1] },
     },
   };
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden">
-      {/* Dynamic Blurred Background based on the first memory */}
+      {/* Dynamic Background based on the first memory (Opacity only) */}
       {memories[0] && (
-        <motion.div 
-          animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-          className="absolute inset-0 z-0"
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 4 }}
+          className="absolute inset-[-10%] w-[120%] h-[120%] z-0"
         >
-          <img src={memories[0].image} alt="" className="w-full h-full object-cover blur-3xl opacity-30 mix-blend-screen" />
+          <img src={memories[0].image} alt="" className="w-full h-full object-cover opacity-10 mix-blend-screen" />
         </motion.div>
       )}
 
