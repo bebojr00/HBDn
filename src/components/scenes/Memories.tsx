@@ -4,6 +4,7 @@ import { motion, Variants } from "framer-motion";
 import { messages } from "@/data/messages";
 import { memories } from "@/data/memories";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function Memories({ onNext }: { onNext: () => void }) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -46,7 +47,7 @@ export default function Memories({ onNext }: { onNext: () => void }) {
           transition={{ duration: 4 }}
           className="absolute inset-[-10%] w-[120%] h-[120%] z-0"
         >
-          <img src={memories[0].image} alt="" className="w-full h-full object-cover opacity-10 mix-blend-screen" />
+          <Image src={memories[0].image} alt="" fill priority className="object-cover opacity-10 mix-blend-screen" sizes="100vw" />
         </motion.div>
       )}
 
@@ -89,13 +90,16 @@ export default function Memories({ onNext }: { onNext: () => void }) {
               className={`absolute ${isCenter ? 'w-[75vw] md:w-[45vw] h-[60vh] md:h-[75vh] z-20' : 'w-[50vw] md:w-[30vw] h-[40vh] md:h-[50vh] z-10'} rounded-lg overflow-hidden shadow-2xl border-[1px] border-white/20`}
             >
               {/* Image */}
-              <img
+              <Image
                 src={memory.image}
                 alt={memory.caption}
-                className="w-full h-full object-cover opacity-80 mix-blend-lighten"
+                fill
+                className="object-cover opacity-80 mix-blend-lighten"
+                sizes="(max-width: 768px) 75vw, 45vw"
+                priority={i === 0}
               />
               {/* Cinematic Vignette */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90 pointer-events-none" />
               
               <p className="absolute bottom-8 left-0 right-0 text-center font-sans text-sm md:text-xl text-white font-light tracking-[0.2em] drop-shadow-[0_0_8px_rgba(0,0,0,0.8)]">
                 {memory.caption}

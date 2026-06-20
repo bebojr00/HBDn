@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { messages } from "@/data/messages";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function WelcomeScreen({ onNext }: { onNext: () => void }) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -38,10 +39,13 @@ export default function WelcomeScreen({ onNext }: { onNext: () => void }) {
           }}
           className="absolute inset-[-5%] w-[110%] h-[110%] z-0"
         >
-          <img 
+          <Image 
             src={messages.welcome.image} 
             alt="Welcome Background" 
-            className="w-full h-full object-cover opacity-50 mix-blend-screen" 
+            fill
+            priority
+            className="object-cover opacity-50 mix-blend-screen" 
+            sizes="100vw"
           />
           {/* Gradient overlay for text readability and cinematic vignette */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/40 to-black" />

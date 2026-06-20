@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { messages } from "@/data/messages";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function NoursWorld({ onNext }: { onNext: () => void }) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -36,10 +37,13 @@ export default function NoursWorld({ onNext }: { onNext: () => void }) {
           }}
           className="absolute inset-[-10%] w-[120%] h-[120%] z-0"
         >
-          <img 
+          <Image 
             src={messages.world.image} 
             alt="World Background" 
-            className="w-full h-full object-cover opacity-60 mix-blend-screen" 
+            fill
+            priority
+            className="object-cover opacity-60 mix-blend-screen" 
+            sizes="100vw"
           />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/50 to-black" />
         </motion.div>

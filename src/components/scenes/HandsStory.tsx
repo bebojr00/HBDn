@@ -3,6 +3,7 @@
 import { motion } from "framer-motion";
 import { messages } from "@/data/messages";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 
 export default function HandsStory({ onNext }: { onNext: () => void }) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -31,10 +32,13 @@ export default function HandsStory({ onNext }: { onNext: () => void }) {
           }}
           className="absolute inset-[-5%] w-[110%] h-[110%] z-0"
         >
-          <img 
+          <Image 
             src={messages.hands.image} 
             alt="Hands Connection" 
-            className="w-full h-full object-cover opacity-60 mix-blend-screen" 
+            fill
+            priority
+            className="object-cover opacity-60 mix-blend-screen" 
+            sizes="100vw"
           />
           {/* Warm romantic glow overlay */}
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/30 via-black/60 to-black" />

@@ -6,6 +6,8 @@ import { StoryOrchestrator } from "@/components/core/StoryOrchestrator";
 import ButterflyOverlay from "@/components/effects/ButterflyOverlay";
 import Sparkles from "@/components/effects/Sparkles";
 import { LoveCounter } from "@/components/ui/LoveCounter";
+import AudioPlayer from "@/components/ui/AudioPlayer";
+import Preloader from "@/components/ui/Preloader";
 
 export default function Home() {
   useEffect(() => {
@@ -17,11 +19,15 @@ export default function Home() {
 
   return (
     <main className="relative w-full h-screen overflow-hidden bg-black text-white selection:bg-rose-500/30">
+      <Preloader />
       <Sparkles />
       <ButterflyOverlay />
       
       {/* Love Counter Global Overlay */}
       <LoveCounter />
+      
+      {/* Background Voice Note */}
+      <AudioPlayer />
 
       <StoryProvider>
         <StoryOrchestrator />

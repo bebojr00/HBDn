@@ -3,6 +3,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { messages } from "@/data/messages";
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import confetti from "canvas-confetti";
 
 // Optimized Butterfly Icon for the Swarm
 const SwarmButterfly = ({ delay }: { delay: number }) => (
@@ -31,6 +33,32 @@ export default function BirthdayMoment({ onNext }: { onNext: () => void }) {
     const revealTimer = setTimeout(() => {
       setWowMoment(false);
       setShowSub(true);
+      
+      // Fire Confetti!
+      const duration = 3000;
+      const end = Date.now() + duration;
+
+      const frame = () => {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#FFD700', '#FF69B4', '#FFC0CB']
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#FFD700', '#FF69B4', '#FFC0CB']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      };
+      frame();
     }, 6000);
     
     return () => {
@@ -49,10 +77,13 @@ export default function BirthdayMoment({ onNext }: { onNext: () => void }) {
           transition={{ duration: 5, ease: "easeOut" }}
           className="absolute inset-[-5%] w-[110%] h-[110%] z-0"
         >
-          <img 
+          <Image 
             src={messages.birthday.image} 
             alt="Birthday Background" 
-            className="w-full h-full object-cover mix-blend-screen" 
+            fill
+            priority
+            className="object-cover mix-blend-screen" 
+            sizes="100vw"
           />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/40 to-black/90" />
         </motion.div>
