@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { messages } from "@/data/messages";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { LoveCounter } from "@/components/ui/LoveCounter";
 
 export default function WelcomeScreen({ onNext }: { onNext: () => void }) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
@@ -66,6 +67,8 @@ export default function WelcomeScreen({ onNext }: { onNext: () => void }) {
             {messages.welcome.subtitle}
           </p>
         </motion.div>
+
+        <LoveCounter />
 
         <motion.div
           initial={{ opacity: 0 }}

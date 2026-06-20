@@ -63,35 +63,36 @@ export const LoveCounter = () => {
   if (!mounted) return null; // Prevent hydration mismatch
 
   return (
-    <div className="absolute top-10 left-1/2 -translate-x-1/2 z-[100] pointer-events-none animate-in fade-in duration-1000">
-      <div className="bg-rose-950/10 backdrop-blur-md border border-rose-200/10 shadow-[0_8px_32px_rgba(0,0,0,0.2)] rounded-2xl px-6 py-4 flex items-center justify-center gap-2 sm:gap-4 text-rose-100">
-        <TimeBlock value={time.years} label="Yrs" />
+    <div className="flex flex-col items-center justify-center mt-12 mb-8 animate-in fade-in duration-1000">
+      <span className="text-rose-200/60 uppercase tracking-[0.4em] text-xs mb-6 font-light">Every second since we met</span>
+      <div className="flex items-center justify-center gap-3 sm:gap-6 text-rose-100">
+        <TimeBlock value={time.years} label="Years" />
         <Separator />
-        <TimeBlock value={time.months} label="Mos" />
+        <TimeBlock value={time.months} label="Months" />
         <Separator />
         <TimeBlock value={time.days} label="Days" />
         <Separator />
-        <TimeBlock value={time.hours.toString().padStart(2, '0')} label="Hrs" />
+        <TimeBlock value={time.hours.toString().padStart(2, '0')} label="Hours" />
         <Separator />
-        <TimeBlock value={time.minutes.toString().padStart(2, '0')} label="Min" />
+        <TimeBlock value={time.minutes.toString().padStart(2, '0')} label="Mins" />
         <Separator />
-        <TimeBlock value={time.seconds.toString().padStart(2, '0')} label="Sec" />
+        <TimeBlock value={time.seconds.toString().padStart(2, '0')} label="Secs" />
       </div>
     </div>
   );
 };
 
 const TimeBlock = ({ value, label }: { value: string | number; label: string }) => (
-  <div className="flex flex-col items-center min-w-[36px] sm:min-w-[44px]">
-    <span className="text-2xl sm:text-3xl font-light bg-gradient-to-br from-white to-rose-300 bg-clip-text text-transparent drop-shadow-sm leading-none mb-1">
+  <div className="flex flex-col items-center min-w-[48px] sm:min-w-[60px]">
+    <span className="text-3xl sm:text-5xl font-extralight bg-gradient-to-br from-white to-rose-200 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] leading-none mb-2">
       {value}
     </span>
-    <span className="text-[0.6rem] sm:text-xs uppercase tracking-widest text-rose-300/80">
+    <span className="text-[0.65rem] sm:text-[0.75rem] uppercase tracking-[0.2em] text-rose-300/60">
       {label}
     </span>
   </div>
 );
 
 const Separator = () => (
-  <span className="text-xl sm:text-2xl font-extralight text-rose-300/30 -mt-3">:</span>
+  <span className="text-2xl sm:text-4xl font-extralight text-rose-300/20 -mt-6 animate-pulse">:</span>
 );

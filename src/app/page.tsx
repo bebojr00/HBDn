@@ -5,7 +5,6 @@ import { StoryProvider } from "@/components/core/StoryProvider";
 import { StoryOrchestrator } from "@/components/core/StoryOrchestrator";
 import ButterflyOverlay from "@/components/effects/ButterflyOverlay";
 import Sparkles from "@/components/effects/Sparkles";
-import { LoveCounter } from "@/components/ui/LoveCounter";
 import AudioPlayer from "@/components/ui/AudioPlayer";
 import Preloader from "@/components/ui/Preloader";
 
@@ -22,9 +21,6 @@ export default function Home() {
       <Preloader />
       <Sparkles />
       <ButterflyOverlay />
-      
-      {/* Love Counter Global Overlay */}
-      <LoveCounter />
       
       {/* Background Voice Note */}
       <AudioPlayer />
