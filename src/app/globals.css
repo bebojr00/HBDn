@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fdf5f6; /* Soft warm pinkish-white background */
+  --foreground: #4a3b3c; /* Dark warm brownish-gray for text */
+  --rose-gold: #b76e79;
+  --blush-pink: #f8c8dc;
+  --soft-pink: #ffb6c1;
+  --warm-gold: #cfb53b;
+  --glass-bg: rgba(255, 255, 255, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-shadow: 0 8px 32px 0 rgba(183, 110, 121, 0.15);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-rose-gold: var(--rose-gold);
+  --color-blush-pink: var(--blush-pink);
+  --color-soft-pink: var(--soft-pink);
+  --color-warm-gold: var(--warm-gold);
+  
+  --font-sans: var(--font-inter);
+  --font-serif: var(--font-cormorant);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
+}
+
+/* Custom Utilities for Glassmorphism */
+@utility glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+@utility text-glow {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 182, 193, 0.6);
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
