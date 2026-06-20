@@ -59,11 +59,12 @@ export default function WelcomeScreen({ onNext }: { onNext: () => void }) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 2.5, delay: 1, ease: [0.25, 0.1, 0.25, 1] }}
+          className="w-full max-w-[90vw]"
         >
-          <h1 className="font-serif text-5xl md:text-8xl font-medium tracking-wide text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.5)] mb-8">
+          <h1 className="font-serif text-4xl sm:text-5xl md:text-8xl font-medium tracking-wide text-white drop-shadow-[0_0_30px_rgba(255,255,255,0.5)] mb-6 sm:mb-8 leading-tight">
             {messages.welcome.title}
           </h1>
-          <p className="font-sans text-xl md:text-2xl text-rose-200 tracking-[0.4em] font-light uppercase">
+          <p className="font-sans text-sm sm:text-xl md:text-2xl text-rose-200 tracking-[0.2em] sm:tracking-[0.4em] font-light uppercase leading-relaxed">
             {messages.welcome.subtitle}
           </p>
         </motion.div>

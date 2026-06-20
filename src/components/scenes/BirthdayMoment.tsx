@@ -111,7 +111,7 @@ export default function BirthdayMoment({ onNext }: { onNext: () => void }) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 2, delay: 1 }}
-              className="font-serif text-7xl md:text-9xl font-bold text-yellow-300 drop-shadow-[0_0_20px_rgba(255,215,0,0.8)] tracking-widest bg-clip-text text-transparent bg-gradient-to-b from-yellow-100 to-yellow-500"
+              className="font-serif text-6xl sm:text-7xl md:text-9xl font-bold text-yellow-300 drop-shadow-[0_0_20px_rgba(255,215,0,0.8)] tracking-widest bg-clip-text text-transparent bg-gradient-to-b from-yellow-100 to-yellow-500"
             >
               Nona ❤️
             </motion.h1>
@@ -126,13 +126,13 @@ export default function BirthdayMoment({ onNext }: { onNext: () => void }) {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 2, ease: "easeOut" }}
-            className="z-10 flex flex-col items-center justify-center text-center px-6 mt-16"
+            className="z-10 flex flex-col items-center justify-center text-center px-6 mt-16 w-full max-w-[90vw]"
           >
             <motion.h1 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 2, delay: 0.5 }}
-              className="font-serif text-5xl md:text-8xl font-bold text-white drop-shadow-md leading-tight mb-8"
+              className="font-serif text-4xl sm:text-5xl md:text-8xl font-bold text-white drop-shadow-md leading-tight mb-6 sm:mb-8"
             >
               {messages.birthday.main}
             </motion.h1>
@@ -141,7 +141,7 @@ export default function BirthdayMoment({ onNext }: { onNext: () => void }) {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 2, delay: 1.5 }}
-              className="font-serif text-3xl md:text-5xl text-rose-100 drop-shadow-sm tracking-wide"
+              className="font-serif text-2xl sm:text-3xl md:text-5xl text-rose-100 drop-shadow-sm tracking-wide"
             >
               {messages.birthday.sub}
             </motion.p>

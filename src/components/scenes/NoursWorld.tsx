@@ -59,11 +59,12 @@ export default function NoursWorld({ onNext }: { onNext: () => void }) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 2.5, delay: 1, ease: [0.25, 0.1, 0.25, 1] }}
+          className="w-full max-w-[90vw]"
         >
-          <h2 className="font-serif text-4xl md:text-7xl font-medium text-white drop-shadow-[0_0_25px_rgba(255,255,255,0.6)] mb-8">
+          <h2 className="font-serif text-4xl sm:text-5xl md:text-7xl font-medium text-white drop-shadow-[0_0_25px_rgba(255,255,255,0.6)] mb-6 sm:mb-8 leading-tight">
             {messages.world.title}
           </h2>
-          <p className="font-sans text-lg md:text-2xl text-white/80 font-light max-w-2xl mx-auto italic leading-relaxed drop-shadow-md">
+          <p className="font-sans text-base sm:text-lg md:text-2xl text-white/80 font-light max-w-2xl mx-auto italic leading-relaxed drop-shadow-md">
             &quot;{messages.world.subtitle}&quot;
           </p>
         </motion.div>

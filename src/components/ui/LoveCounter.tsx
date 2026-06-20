@@ -83,16 +83,16 @@ export const LoveCounter = () => {
 };
 
 const TimeBlock = ({ value, label }: { value: string | number; label: string }) => (
-  <div className="flex flex-col items-center min-w-[48px] sm:min-w-[60px]">
-    <span className="text-3xl sm:text-5xl font-extralight bg-gradient-to-br from-white to-rose-200 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] leading-none mb-2">
+  <div className="flex flex-col items-center min-w-[40px] sm:min-w-[48px] md:min-w-[60px]">
+    <span className="text-2xl sm:text-4xl md:text-5xl font-extralight bg-gradient-to-br from-white to-rose-200 bg-clip-text text-transparent drop-shadow-[0_0_15px_rgba(255,255,255,0.3)] leading-none mb-1 sm:mb-2">
       {value}
     </span>
-    <span className="text-[0.65rem] sm:text-[0.75rem] uppercase tracking-[0.2em] text-rose-300/60">
+    <span className="text-[0.55rem] sm:text-[0.65rem] md:text-[0.75rem] uppercase tracking-[0.1em] sm:tracking-[0.2em] text-rose-300/60">
       {label}
     </span>
   </div>
 );
 
 const Separator = () => (
-  <span className="text-2xl sm:text-4xl font-extralight text-rose-300/20 -mt-6 animate-pulse">:</span>
+  <span className="text-xl sm:text-3xl md:text-4xl font-extralight text-rose-300/20 -mt-4 sm:-mt-6 animate-pulse">:</span>
 );

@@ -55,11 +55,12 @@ export default function HandsStory({ onNext }: { onNext: () => void }) {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 2.5, delay: 1, ease: [0.25, 0.1, 0.25, 1] }}
+          className="w-full max-w-[90vw]"
         >
-          <h2 className="font-serif text-5xl md:text-7xl font-medium text-white drop-shadow-[0_0_30px_rgba(255,200,150,0.5)] mb-8">
+          <h2 className="font-serif text-4xl sm:text-5xl md:text-7xl font-medium text-white drop-shadow-[0_0_30px_rgba(255,200,150,0.5)] mb-6 sm:mb-8 leading-tight">
             {messages.hands.title}
           </h2>
-          <p className="font-sans text-xl md:text-3xl text-rose-100/90 font-light italic leading-relaxed drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]">
+          <p className="font-sans text-lg sm:text-xl md:text-3xl text-rose-100/90 font-light italic leading-relaxed drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]">
             &quot;{messages.hands.subtitle}&quot;
           </p>
         </motion.div>
