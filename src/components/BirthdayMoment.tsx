@@ -6,63 +6,91 @@ import { useEffect, useState } from "react";
 
 export default function BirthdayMoment({ onNext }: { onNext: () => void }) {
   const [showSub, setShowSub] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowSub(true);
-    }, 2000);
-    return () => clearTimeout(timer);
+    }, 2500);
+    
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({
+        x: (e.clientX / window.innerWidth - 0.5) * 15,
+        y: (e.clientY / window.innerHeight - 0.5) * 15,
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
   }, []);
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center px-6 relative cursor-pointer" onClick={onNext}>
-      {/* Intense glow for the peak moment */}
-      <motion.div
-        initial={{ opacity: 0, scale: 0 }}
-        animate={{ opacity: 0.6, scale: 1 }}
-        transition={{ duration: 3, ease: "easeOut" }}
-        className="absolute inset-0 m-auto w-[150vw] h-[150vw] md:w-[80vw] md:h-[80vw] rounded-full bg-[radial-gradient(circle,var(--color-soft-pink)_0%,transparent_70%)] blur-3xl -z-10"
-      />
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden">
+      {/* Cinematic Background */}
+      {messages.birthday.image && (
+        <motion.div
+          initial={{ scale: 1.2, filter: "brightness(0.2) blur(10px)" }}
+          animate={{ scale: 1, filter: "brightness(0.6) blur(0px)" }}
+          transition={{ duration: 5, ease: "easeOut" }}
+          className="absolute inset-[-5%] w-[110%] h-[110%] z-0"
+        >
+          <img 
+            src={messages.birthday.image} 
+            alt="Birthday Background" 
+            className="w-full h-full object-cover mix-blend-screen opacity-70" 
+          />
+          {/* Intense vignette for focus on text */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/40 to-black/90" />
+        </motion.div>
+      )}
 
+      {/* Foreground Content */}
       <motion.div
-        initial={{ opacity: 0, scale: 0.8, y: 30 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        transition={{ duration: 2, ease: "easeOut" }}
-        className="text-center z-10"
+        animate={{ x: mousePos.x, y: mousePos.y }}
+        transition={{ type: "spring", stiffness: 20, damping: 20 }}
+        className="z-10 flex flex-col items-center justify-center text-center px-6 mt-16"
       >
-        <h1 className="font-serif text-5xl md:text-8xl font-bold text-foreground text-glow mb-6 leading-tight">
+        <motion.h1 
+          initial={{ opacity: 0, scale: 0.9, y: 20 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          transition={{ duration: 3, delay: 1, ease: [0.25, 0.1, 0.25, 1] }}
+          className="font-serif text-6xl md:text-9xl font-bold text-white drop-shadow-[0_0_40px_rgba(255,255,255,0.7)] leading-tight mb-8"
+        >
           {messages.birthday.main}
-        </h1>
+        </motion.h1>
         
-        {/* Arabic subtitle reveals slightly after */}
         <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: showSub ? 1 : 0, y: showSub ? 0 : 20 }}
-          transition={{ duration: 1.5 }}
-          className="font-serif text-3xl md:text-5xl text-rose-gold text-glow"
+          initial={{ opacity: 0, y: 20, filter: "blur(5px)" }}
+          animate={{ 
+            opacity: showSub ? 1 : 0, 
+            y: showSub ? 0 : 20,
+            filter: showSub ? "blur(0px)" : "blur(5px)"
+          }}
+          transition={{ duration: 3, ease: "easeOut" }}
+          className="font-serif text-4xl md:text-6xl text-rose-100 drop-shadow-[0_0_20px_rgba(255,200,200,0.6)] tracking-wide"
         >
           {messages.birthday.sub}
         </motion.p>
-
-        {messages.birthday.image && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: showSub ? 1 : 0, scale: showSub ? 1 : 0.8 }}
-            transition={{ duration: 1.5, delay: 1 }}
-            className="w-56 h-56 md:w-72 md:h-72 mx-auto mt-12 rounded-full overflow-hidden shadow-[0_0_40px_rgba(255,182,193,0.6)] border-4 border-white"
-          >
-            <img src={messages.birthday.image} alt="Birthday" className="w-full h-full object-cover" />
-          </motion.div>
-        )}
       </motion.div>
 
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 5 }}
-        className="absolute bottom-10 flex flex-col items-center"
+        transition={{ duration: 3, delay: 5 }}
+        className="absolute bottom-10 z-20 flex flex-col items-center cursor-pointer group"
+        onClick={onNext}
       >
-        <span className="text-xs tracking-widest text-foreground/60 uppercase mb-2">Tap Anywhere</span>
+        <span className="text-xs tracking-[0.3em] text-white/50 uppercase mb-4 group-hover:text-white transition-all duration-700">
+          Make a Wish
+        </span>
+        <motion.div
+          animate={{ y: [0, 15, 0], opacity: [0.2, 0.8, 0.2] }}
+          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+          className="w-[1px] h-16 bg-gradient-to-b from-white to-transparent"
+        />
       </motion.div>
     </div>
   );

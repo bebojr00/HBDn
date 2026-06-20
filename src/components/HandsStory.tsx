@@ -2,67 +2,81 @@
 
 import { motion } from "framer-motion";
 import { messages } from "@/data/messages";
+import { useEffect, useState } from "react";
 
 export default function HandsStory({ onNext }: { onNext: () => void }) {
-  return (
-    <div className="w-full h-full flex flex-col items-center justify-center px-6 relative">
-      {/* Romantic warm glow overlay specific to this scene */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 0.3 }}
-        transition={{ duration: 3 }}
-        className="absolute inset-0 bg-gradient-to-t from-warm-gold/20 via-transparent to-transparent pointer-events-none"
-      />
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-      <motion.div
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 2, ease: "easeOut" }}
-        className="text-center z-10 flex flex-col items-center"
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({
+        x: (e.clientX / window.innerWidth - 0.5) * 20,
+        y: (e.clientY / window.innerHeight - 0.5) * 20,
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  return (
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden">
+      {/* Full screen cinematic background */}
+      {messages.hands.image && (
+        <motion.div
+          initial={{ scale: 1.1, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ 
+            scale: { duration: 20, ease: "easeOut" },
+            opacity: { duration: 2, ease: "easeOut" }
+          }}
+          className="absolute inset-[-5%] w-[110%] h-[110%] z-0"
+        >
+          <img 
+            src={messages.hands.image} 
+            alt="Hands Connection" 
+            className="w-full h-full object-cover opacity-60 mix-blend-screen" 
+          />
+          {/* Warm romantic glow overlay */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-amber-900/30 via-black/60 to-black" />
+        </motion.div>
+      )}
+
+      {/* Foreground Content with subtle parallax */}
+      <motion.div 
+        animate={{ x: mousePos.x, y: mousePos.y }}
+        transition={{ type: "spring", stiffness: 30, damping: 30 }}
+        className="z-10 flex flex-col items-center justify-center text-center px-6 max-w-3xl mt-12"
       >
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 2, delay: 1 }}
+          transition={{ duration: 2.5, delay: 1, ease: [0.25, 0.1, 0.25, 1] }}
         >
-          <h2 className="font-serif text-4xl md:text-6xl font-medium text-foreground text-glow mb-6">
+          <h2 className="font-serif text-5xl md:text-7xl font-medium text-white drop-shadow-[0_0_30px_rgba(255,200,150,0.5)] mb-8">
             {messages.hands.title}
           </h2>
-          <p className="font-sans text-lg md:text-2xl text-foreground/80 font-light italic">
+          <p className="font-sans text-xl md:text-3xl text-rose-100/90 font-light italic leading-relaxed drop-shadow-[0_0_10px_rgba(0,0,0,0.8)]">
             &quot;{messages.hands.subtitle}&quot;
           </p>
         </motion.div>
 
-        {/* Abstract glowing circle to represent hands/connection */}
         <motion.div
-          initial={{ opacity: 0, scale: 0 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 2, delay: 2.5, ease: "easeOut" }}
-          className="mt-16 relative w-48 h-48 md:w-64 md:h-64 flex items-center justify-center"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 3, delay: 3.5 }}
+          className="mt-32 cursor-pointer group flex flex-col items-center"
+          onClick={onNext}
         >
-          <div className="absolute inset-0 rounded-full bg-rose-gold/20 blur-3xl animate-pulse" />
-          <div className="absolute inset-4 rounded-full bg-blush-pink/30 blur-2xl" />
-          <div className="glass rounded-full w-full h-full flex items-center justify-center border-white/40 overflow-hidden">
-            {messages.hands.image ? (
-              <img src={messages.hands.image} alt="Hands" className="w-full h-full object-cover" />
-            ) : (
-              <span className="text-4xl">✨</span>
-            )}
-          </div>
+          <span className="text-xs tracking-[0.3em] text-white/50 uppercase mb-6 group-hover:text-white transition-all duration-700">
+            Hold On
+          </span>
+          <motion.div
+            animate={{ y: [0, 15, 0], opacity: [0.2, 0.8, 0.2] }}
+            transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+            className="w-[1px] h-20 bg-gradient-to-b from-white to-transparent"
+          />
         </motion.div>
       </motion.div>
-
-      <motion.button
-        onClick={onNext}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 5 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="absolute bottom-16 text-foreground font-sans tracking-widest uppercase text-sm border-b border-foreground/30 pb-1"
-      >
-        Continue
-      </motion.button>
     </div>
   );
 }

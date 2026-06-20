@@ -3,76 +3,101 @@
 import { motion } from "framer-motion";
 import { messages } from "@/data/messages";
 import { memories } from "@/data/memories";
+import { useEffect, useState } from "react";
 
 export default function Memories({ onNext }: { onNext: () => void }) {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({
+        x: (e.clientX / window.innerWidth - 0.5) * 30,
+        y: (e.clientY / window.innerHeight - 0.5) * 30,
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
   const containerVariants = {
     hidden: { opacity: 0 },
     show: {
       opacity: 1,
-      transition: { staggerChildren: 0.4, delayChildren: 0.5 },
+      transition: { staggerChildren: 0.8, delayChildren: 1 },
     },
   };
 
   const cardVariants = {
-    hidden: { opacity: 0, y: 50, scale: 0.9 },
+    hidden: { opacity: 0, scale: 0.8, filter: "blur(10px)" },
     show: {
       opacity: 1,
-      y: 0,
       scale: 1,
-      transition: { duration: 1, ease: "easeOut" as const },
+      filter: "blur(0px)",
+      transition: { duration: 2, ease: [0.25, 0.1, 0.25, 1] },
     },
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center px-6 relative">
-      {/* Centered quote */}
+    <div className="w-full h-full flex flex-col items-center justify-center relative overflow-hidden">
+      {/* Dynamic Blurred Background based on the first memory */}
+      {memories[0] && (
+        <motion.div 
+          animate={{ scale: [1, 1.1, 1], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute inset-0 z-0"
+        >
+          <img src={memories[0].image} alt="" className="w-full h-full object-cover blur-3xl opacity-30 mix-blend-screen" />
+        </motion.div>
+      )}
+
+      {/* Quote */}
       <motion.div
-        initial={{ opacity: 0, y: -20 }}
+        initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.5 }}
-        className="absolute top-24 z-20 w-full text-center px-4"
+        transition={{ duration: 2, delay: 0.5 }}
+        className="absolute top-16 md:top-24 z-30 w-full text-center px-4"
       >
-        <p className="font-serif text-2xl md:text-4xl text-foreground text-glow italic font-medium">
+        <p className="font-serif text-3xl md:text-5xl text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.6)] italic font-light">
           &quot;{messages.memories.quote}&quot;
         </p>
       </motion.div>
 
-      {/* Floating Cards */}
+      {/* Cinematic Memories Collage */}
       <motion.div
         variants={containerVariants}
         initial="hidden"
         animate="show"
-        className="relative w-full max-w-4xl h-[60vh] mt-20 flex flex-wrap items-center justify-center gap-8"
+        className="relative w-full h-[70vh] flex items-center justify-center z-10"
       >
         {memories.map((memory, i) => {
-          // Calculate arbitrary floating positions for a 'scattered' pinterest feel
-          const isEven = i % 2 === 0;
-          const yOffset = isEven ? -20 : 20;
+          const isCenter = i === Math.floor(memories.length / 2);
+          const xOffset = (i - Math.floor(memories.length / 2)) * 25; // vw
+          const yOffset = i % 2 === 0 ? 10 : -10; // vh
+          const rotation = i % 2 === 0 ? 2 : -2;
 
           return (
             <motion.div
               key={memory.id}
               variants={cardVariants}
-              whileHover={{ scale: 1.05, rotate: isEven ? 2 : -2, zIndex: 30 }}
-              className={`glass rounded-2xl p-4 w-40 h-56 md:w-56 md:h-72 flex flex-col items-center justify-end shadow-xl relative cursor-pointer`}
-              style={{
-                transform: `translateY(${yOffset}px) rotate(${isEven ? -3 : 3}deg)`,
+              animate={{ 
+                x: mousePos.x * (isCenter ? 1 : 1.5) + xOffset + "vw", 
+                y: mousePos.y * (isCenter ? 1 : 1.5) + yOffset + "vh",
+                rotate: rotation
               }}
+              transition={{ type: "spring", stiffness: 30, damping: 25 }}
+              whileHover={{ scale: 1.05, zIndex: 40, rotate: 0 }}
+              className={`absolute ${isCenter ? 'w-[75vw] md:w-[45vw] h-[60vh] md:h-[75vh] z-20' : 'w-[50vw] md:w-[30vw] h-[40vh] md:h-[50vh] z-10'} rounded-lg overflow-hidden shadow-2xl border-[1px] border-white/20`}
             >
               {/* Image */}
-              <div className="absolute inset-4 rounded-xl bg-white/20 overflow-hidden">
-                {memory.image.startsWith("/") ? (
-                  <img
-                    src={memory.image}
-                    alt={memory.caption}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gradient-to-br from-rose-gold/30 to-blush-pink/30 animate-pulse" />
-                )}
-              </div>
+              <img
+                src={memory.image}
+                alt={memory.caption}
+                className="w-full h-full object-cover opacity-80 mix-blend-lighten"
+              />
+              {/* Cinematic Vignette */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90" />
               
-              <p className="font-sans text-xs md:text-sm text-foreground/80 font-medium z-10 bg-white/40 px-3 py-1 rounded-full backdrop-blur-md mb-2">
+              <p className="absolute bottom-8 left-0 right-0 text-center font-sans text-sm md:text-xl text-white font-light tracking-[0.2em] drop-shadow-[0_0_8px_rgba(0,0,0,0.8)]">
                 {memory.caption}
               </p>
             </motion.div>
@@ -83,15 +108,17 @@ export default function Memories({ onNext }: { onNext: () => void }) {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 4 }}
-        className="absolute bottom-10 flex flex-col items-center cursor-pointer z-30"
+        transition={{ duration: 2, delay: 5 }}
+        className="absolute bottom-10 flex flex-col items-center cursor-pointer z-30 group"
         onClick={onNext}
       >
-        <span className="text-xs tracking-widest text-foreground/60 uppercase mb-2">Next Chapter</span>
+        <span className="text-xs tracking-[0.3em] text-white/50 uppercase mb-4 group-hover:text-white transition-all duration-700">
+          Turn the Page
+        </span>
         <motion.div
-          animate={{ y: [0, 8, 0] }}
-          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
-          className="w-[1px] h-12 bg-gradient-to-b from-foreground/40 to-transparent"
+          animate={{ y: [0, 15, 0], opacity: [0.2, 0.8, 0.2] }}
+          transition={{ repeat: Infinity, duration: 4, ease: "easeInOut" }}
+          className="w-[1px] h-16 bg-gradient-to-b from-white to-transparent"
         />
       </motion.div>
     </div>

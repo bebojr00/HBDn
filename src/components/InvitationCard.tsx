@@ -2,54 +2,78 @@
 
 import { motion } from "framer-motion";
 import { messages } from "@/data/messages";
+import { useEffect, useState } from "react";
 
 export default function InvitationCard() {
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({
+        x: (e.clientX / window.innerWidth - 0.5) * 10,
+        y: (e.clientY / window.innerHeight - 0.5) * 10,
+      });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center px-4 md:px-0">
-      <motion.div
-        initial={{ opacity: 0, y: 50, rotateX: 10 }}
-        animate={{ opacity: 1, y: 0, rotateX: 0 }}
-        transition={{ duration: 1.5, ease: "easeOut" }}
-        className="glass relative w-full max-w-lg rounded-[30px] p-8 md:p-12 overflow-hidden flex flex-col items-center text-center shadow-2xl border-white/60"
-        style={{ perspective: 1000 }}
-      >
-        {/* Soft internal glow */}
-        <div className="absolute top-0 inset-x-0 h-32 bg-gradient-to-b from-white/30 to-transparent pointer-events-none" />
-
-        {/* Anime Couple Illustration Placeholder / Image */}
+    <div className="relative w-full h-full flex flex-col items-center justify-center overflow-hidden bg-black">
+      {/* Immersive Background */}
+      {messages.invitation.image && (
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
+          initial={{ scale: 1.1, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 2, delay: 1 }}
-          className="w-32 h-32 md:w-48 md:h-48 rounded-full bg-gradient-to-tr from-rose-gold/40 to-blush-pink/40 mb-8 border border-white/50 shadow-inner flex items-center justify-center overflow-hidden"
+          transition={{ duration: 10, ease: "easeOut" }}
+          className="absolute inset-[-5%] w-[110%] h-[110%] z-0"
         >
-          {messages.invitation.image ? (
-            <img src={messages.invitation.image} alt="Couple" className="w-full h-full object-cover" />
-          ) : (
-            <div className="text-4xl animate-pulse">👩‍❤️‍👨</div>
-          )}
+          <img 
+            src={messages.invitation.image} 
+            alt="Invitation Background" 
+            className="w-full h-full object-cover mix-blend-screen opacity-40" 
+          />
+          {/* Deep Vignette */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-black/60 to-black" />
         </motion.div>
+      )}
 
+      {/* Foreground Content */}
+      <motion.div 
+        animate={{ x: mousePos.x, y: mousePos.y }}
+        transition={{ type: "spring", stiffness: 20, damping: 30 }}
+        className="z-10 flex flex-col items-center text-center px-6 max-w-2xl w-full"
+      >
         <motion.h2
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 1.5 }}
-          className="font-serif text-3xl md:text-5xl font-bold text-foreground mb-8"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 2.5, delay: 1, ease: [0.25, 0.1, 0.25, 1] }}
+          className="font-serif text-5xl md:text-7xl font-bold text-white drop-shadow-[0_0_20px_rgba(255,255,255,0.6)] mb-16"
         >
           {messages.invitation.title}
         </motion.h2>
 
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 2.5 }}
-          className="flex flex-col space-y-4 w-full"
+          initial="hidden"
+          animate="show"
+          variants={{
+            hidden: { opacity: 0 },
+            show: {
+              opacity: 1,
+              transition: { staggerChildren: 0.8, delayChildren: 2.5 }
+            }
+          }}
+          className="flex flex-col space-y-10 w-full"
         >
           {messages.invitation.locations.map((loc, i) => (
             <motion.div
               key={i}
-              whileHover={{ scale: 1.02, backgroundColor: "rgba(255,255,255,0.6)" }}
-              className="w-full py-3 px-6 rounded-2xl bg-white/40 border border-white/30 font-sans text-lg text-foreground/90 flex justify-center items-center transition-colors"
+              variants={{
+                hidden: { opacity: 0, y: 20, filter: "blur(10px)" },
+                show: { opacity: 1, y: 0, filter: "blur(0px)", transition: { duration: 2, ease: "easeOut" } }
+              }}
+              whileHover={{ scale: 1.05, textShadow: "0 0 15px rgba(255,255,255,0.8)" }}
+              className="font-serif text-2xl md:text-4xl text-rose-100/90 font-light cursor-pointer transition-all duration-500 drop-shadow-md"
             >
               {loc}
             </motion.div>
@@ -59,8 +83,8 @@ export default function InvitationCard() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 3.5 }}
-          className="mt-12 text-sm font-sans tracking-widest text-foreground/50 uppercase"
+          transition={{ duration: 2, delay: 6 }}
+          className="mt-32 text-xs font-sans tracking-[0.5em] text-white/40 uppercase"
         >
           Happy Birthday
         </motion.div>
