@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import dynamic from "next/dynamic";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import MagicalParticles from "@/components/Particles";
 import { SCENES, getTotalScenes } from "@/data/timeline";
 
@@ -22,6 +23,12 @@ export default function Home() {
   const nextScene = () => {
     if (currentScene < getTotalScenes() - 1) {
       setCurrentScene((prev) => prev + 1);
+    }
+  };
+
+  const prevScene = () => {
+    if (currentScene > 0) {
+      setCurrentScene((prev) => prev - 1);
     }
   };
 
@@ -74,6 +81,31 @@ export default function Home() {
           {renderScene()}
         </motion.div>
       </AnimatePresence>
+
+      {/* Global Navigation Buttons */}
+      <div className="fixed bottom-6 left-0 right-0 z-50 flex justify-between px-8 pointer-events-none">
+        <button
+          onClick={prevScene}
+          disabled={currentScene === 0}
+          className={`p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white pointer-events-auto transition-all duration-300 hover:bg-white/20 active:scale-95 ${
+            currentScene === 0 ? "opacity-0 cursor-default pointer-events-none" : "opacity-100 hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+          }`}
+          aria-label="Previous scene"
+        >
+          <ChevronLeft size={24} />
+        </button>
+
+        <button
+          onClick={nextScene}
+          disabled={currentScene === getTotalScenes() - 1}
+          className={`p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white pointer-events-auto transition-all duration-300 hover:bg-white/20 active:scale-95 ${
+            currentScene === getTotalScenes() - 1 ? "opacity-0 cursor-default pointer-events-none" : "opacity-100 hover:shadow-[0_0_15px_rgba(255,255,255,0.3)]"
+          }`}
+          aria-label="Next scene"
+        >
+          <ChevronRight size={24} />
+        </button>
+      </div>
     </main>
   );
 }
